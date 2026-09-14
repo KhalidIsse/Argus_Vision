@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Argus Vision — Custom Computer Vision Surveillance Systems</title>
+<link rel="stylesheet" href="styles.css">
+<script>
+  // Runs before paint so the page never flashes the wrong theme on load.
+  (function () {
+    var saved = localStorage.getItem('argus-theme');
+    var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+  })();
+</script>
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="#home" class="logo">
+      <svg viewBox="0 0 32 32" class="logo-mark" aria-hidden="true">
+        <circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="2"/>
+        <circle cx="16" cy="16" r="5.5" fill="currentColor"/>
+        <path d="M4 16h4M24 16h4M16 4v4M16 24v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span>Argus Vision</span>
+    </a>
+
+    <nav class="nav-links" id="nav-links">
+      <a href="#capabilities">Capabilities</a>
+      <a href="#how">How it works</a>
+      <a href="#industries">Industries</a>
+      <a href="#contact">Talk to us</a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Switch to dark mode" aria-pressed="false">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.5"/>
+          <path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/>
+        </svg>
+      </button>
+
+      <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="nav-backdrop" id="nav-backdrop"></div>
+
+<main>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero" id="home">
+    <div class="hero-text">
+      <p class="hero-kicker">Custom computer vision, built to spec</p>
+      <h1>Surveillance models trained on <span class="hl">your</span> cameras, <span class="hl">your</span> data, <span class="hl">your</span> edge cases.</h1>
+      <p class="hero-sub">Argus Vision designs and ships end-to-end computer vision pipelines — detection, tracking, and anomaly alerts — tuned to the exact conditions of your site, not a generic pretrained model.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">Book a technical call</a>
+        <a href="#capabilities" class="btn btn-ghost">See what we build</a>
+      </div>
+      <div class="hero-stats">
+        <div><strong>99.2%</strong><span>mAP on client benchmarks</span></div>
+        <div><strong>&lt;80ms</strong><span>edge inference latency</span></div>
+        <div><strong>40+</strong><span>deployments in production</span></div>
+      </div>
+    </div>
+
+    <div class="hero-art" aria-hidden="true">
+      <svg viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="10" width="460" height="360" rx="16" fill="var(--scene)"/>
+        <!-- corner brackets, viewfinder style -->
+        <g stroke="var(--ink)" stroke-width="2.5" fill="none" opacity="0.35">
+          <path d="M24 46 V26 H44"/>
+          <path d="M456 46 V26 H436"/>
+          <path d="M24 334 V354 H44"/>
+          <path d="M456 334 V354 H436"/>
+        </g>
+        <!-- abstract scene shapes -->
+        <rect x="60" y="200" width="120" height="130" rx="8" fill="var(--scene-shape)"/>
+        <circle cx="300" cy="150" r="46" fill="var(--scene-shape)"/>
+        <rect x="330" y="190" width="90" height="140" rx="10" fill="var(--scene-shape)"/>
+        <!-- detection box 1 -->
+        <rect x="48" y="188" width="146" height="156" rx="4" fill="none" stroke="var(--box-cyan)" stroke-width="2.5"/>
+        <rect x="48" y="168" width="94" height="20" rx="4" fill="var(--box-cyan)"/>
+        <text x="55" y="182" font-size="11" font-family="monospace" fill="var(--scene)">PERSON 98%</text>
+        <!-- detection box 2 -->
+        <rect x="252" y="96" width="98" height="100" rx="4" fill="none" stroke="var(--box-magenta)" stroke-width="2.5"/>
+        <rect x="252" y="76" width="78" height="20" rx="4" fill="var(--box-magenta)"/>
+        <text x="259" y="90" font-size="11" font-family="monospace" fill="var(--scene)">FACE 94%</text>
+        <!-- detection box 3 -->
+        <rect x="316" y="176" width="118" height="156" rx="4" fill="none" stroke="var(--box-amber)" stroke-width="2.5"/>
+        <rect x="316" y="156" width="120" height="20" rx="4" fill="var(--box-amber)"/>
+        <text x="323" y="170" font-size="11" font-family="monospace" fill="var(--scene)">VEHICLE 91%</text>
+        <!-- anomaly pulse -->
+        <circle cx="405" cy="80" r="9" fill="var(--box-lime)"/>
+        <circle cx="405" cy="80" r="9" fill="var(--box-lime)" opacity="0.45">
+          <animate attributeName="r" values="9;20;9" dur="2.4s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.45;0;0.45" dur="2.4s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ===================== CAPABILITIES ===================== -->
+  <section class="capabilities" id="capabilities">
+    <div class="section-heading">
+      <h2>What we build</h2>
+      <p>Every engagement starts from your footage and your failure cases, not an off-the-shelf checkpoint.</p>
+    </div>
+
+    <div class="cap-cards">
+      <div class="cap-card" style="--tint:var(--box-cyan);">
+        <span class="icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="6" width="14" height="12" rx="2"/><path d="M17 10l4-3v10l-4-3"/></svg>
+        </span>
+        <h3>Custom Model Development</h3>
+        <p>Detection and tracking models trained on your cameras' angles, lighting, and object classes — not a generic COCO checkpoint.</p>
+      </div>
+
+      <div class="cap-card" style="--tint:var(--box-magenta);">
+        <span class="icon">
+          <svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg>
+        </span>
+        <h3>Real-Time Detection &amp; Alerts</h3>
+        <p>Sub-100ms inference pipelines that flag intrusions, loitering, or restricted-zone entry the moment they happen.</p>
+      </div>
+
+      <div class="cap-card" style="--tint:var(--box-amber);">
+        <span class="icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>
+        </span>
+        <h3>Edge Deployment</h3>
+        <p>Models optimized and shipped to run directly on-site — NVR boxes, Jetson devices, or your existing NVR hardware.</p>
+      </div>
+
+      <div class="cap-card" style="--tint:var(--box-lime);">
+        <span class="icon">
+          <svg viewBox="0 0 24 24"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg>
+        </span>
+        <h3>Anomaly Detection</h3>
+        <p>Unsupervised models that learn a site's normal patterns and surface what doesn't fit — no manual rule-writing.</p>
+      </div>
+
+      <div class="cap-card" style="--tint:var(--box-cyan);">
+        <span class="icon">
+          <svg viewBox="0 0 24 24"><circle cx="7" cy="7" r="3"/><circle cx="17" cy="7" r="3"/><circle cx="12" cy="17" r="3"/><path d="M9 9l2 6M15 9l-2 6"/></svg>
+        </span>
+        <h3>Multi-Camera Fusion</h3>
+        <p>Re-identification across camera feeds, so a tracked object keeps its identity as it moves through your site.</p>
+      </div>
+
+      <div class="cap-card" style="--tint:var(--box-magenta);">
+        <span class="icon">
+          <svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 5-3 8.5-7 9-4-.5-7-4-7-9V6z"/></svg>
+        </span>
+        <h3>Compliance &amp; Privacy</h3>
+        <p>Face-blurring, retention policies, and audit logs built in from day one, mapped to your jurisdiction's requirements.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== HOW IT WORKS ===================== -->
+  <section class="how" id="how">
+    <div class="section-heading">
+      <h2>How an engagement runs</h2>
+      <p>Typically six to twelve weeks from kickoff to a model running on your hardware.</p>
+    </div>
+
+    <ol class="steps">
+      <li>
+        <span class="step-num">01</span>
+        <h3>Site &amp; data audit</h3>
+        <p>We review your camera coverage, lighting conditions, and existing footage to scope what's realistic.</p>
+      </li>
+      <li>
+        <span class="step-num">02</span>
+        <h3>Data &amp; labeling</h3>
+        <p>We curate and annotate a training set from your real footage, including the edge cases that break generic models.</p>
+      </li>
+      <li>
+        <span class="step-num">03</span>
+        <h3>Model training</h3>
+        <p>Custom architectures tuned for your object classes, benchmarked against your accuracy and latency targets.</p>
+      </li>
+      <li>
+        <span class="step-num">04</span>
+        <h3>Deploy &amp; monitor</h3>
+        <p>Shipped to your edge devices with drift monitoring, so the model keeps performing as conditions change.</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ===================== INDUSTRIES ===================== -->
+  <section class="industries" id="industries">
+    <div class="section-heading">
+      <h2>Where our models run today</h2>
+      <p>Different sites, different failure modes — every model is tuned to its own environment.</p>
+    </div>
+
+    <div class="industry-grid">
+      <div class="industry-card">
+        <svg viewBox="0 0 40 40"><rect x="6" y="14" width="28" height="20" rx="2"/><path d="M12 14V9a8 8 0 0 1 16 0v5"/></svg>
+        <h3>Critical Infrastructure</h3>
+        <p>Perimeter intrusion and restricted-zone monitoring for utilities and ports.</p>
+      </div>
+      <div class="industry-card">
+        <svg viewBox="0 0 40 40"><rect x="5" y="8" width="30" height="24" rx="2"/><path d="M13 32v-8h14v8"/></svg>
+        <h3>Retail &amp; Logistics</h3>
+        <p>Loss prevention, queue analytics, and loading-dock activity tracking.</p>
+      </div>
+      <div class="industry-card">
+        <svg viewBox="0 0 40 40"><circle cx="20" cy="14" r="7"/><path d="M8 34c0-8 5.5-12 12-12s12 4 12 12"/></svg>
+        <h3>Campuses &amp; Facilities</h3>
+        <p>Access control, occupancy counting, and after-hours anomaly alerts.</p>
+      </div>
+      <div class="industry-card">
+        <svg viewBox="0 0 40 40"><rect x="6" y="6" width="28" height="28" rx="3"/><path d="M6 16h28M16 6v28"/></svg>
+        <h3>Manufacturing</h3>
+        <p>PPE compliance checks and restricted-machinery zone monitoring on the floor.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TESTIMONIAL ===================== -->
+  <section class="testimonial">
+    <svg class="quote-mark" viewBox="0 0 40 32" aria-hidden="true">
+      <path d="M0 32V19.5Q0 8 12 0l3 5Q7 9 7 17h8v15H0Zm21 0V19.5Q21 8 33 0l3 5q-8 4-8 12h8v15H21Z"/>
+    </svg>
+    <p class="quote-text">Argus retrained their model around our actual dock lighting instead of asking us to fix the lighting. False positives dropped by 70% in the first month.</p>
+    <p class="quote-author">— Priya Anand, Head of Security Ops, Fernway Logistics</p>
+  </section>
+
+  <!-- ===================== CONTACT ===================== -->
+  <section class="contact" id="contact">
+    <div class="contact-info">
+      <h2>Tell us about your site</h2>
+      <p>Send a few details about your cameras and use case — we'll follow up with a technical scoping call, not a sales pitch.</p>
+      <p class="contact-detail">deploy@argusvision.io<br>+252 615504297</p>
+    </div>
+
+    <form class="contact-form" onsubmit="return false;">
+      <label>
+        Name
+        <input type="text" name="name" placeholder="Your name" required>
+      </label>
+      <label>
+        Work email
+        <input type="email" name="email" placeholder="you@company.com" required>
+      </label>
+      <label>
+        What are you trying to detect?
+        <textarea name="message" rows="4" placeholder="e.g. perimeter intrusion across 12 outdoor cameras..." required></textarea>
+      </label>
+      <button type="submit" class="btn btn-primary">Request a scoping call</button>
+    </form>
+  </section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="#home" class="logo logo-footer">
+      <svg viewBox="0 0 32 32" class="logo-mark" aria-hidden="true">
+        <circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="2"/>
+        <circle cx="16" cy="16" r="5.5" fill="currentColor"/>
+        <path d="M4 16h4M24 16h4M16 4v4M16 24v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span>Argus Vision</span>
+    </a>
+
+    <nav class="footer-links">
+      <a href="#capabilities">Capabilities</a>
+      <a href="#how">How it works</a>
+      <a href="#industries">Industries</a>
+      <a href="#contact">Talk to us</a>
+    </nav>
+
+    <div class="footer-social">
+      <a href="#" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7.5 10v7M7.5 7v.01M12 17v-4.5c0-1.5 1-2.5 2.5-2.5S17 11 17 12.5V17"/></svg>
+      </a>
+      <a href="#" aria-label="GitHub">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-3.16 19.5c.5.1.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.26-.45-1.29.1-2.68 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.4.2 2.43.1 2.68.64.7 1.03 1.6 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+      </a>
+    </div>
+  </div>
+  <p class="footer-copy">© 2026 Argus Vision. All rights reserved.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
